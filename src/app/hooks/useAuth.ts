@@ -4,7 +4,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { LoginCredentials, AuthResponse, Usuario } from '@/types';
+import { LoginCredentials, AuthResponse, Usuario } from '../types';
 
 interface AuthResult {
   success: boolean;

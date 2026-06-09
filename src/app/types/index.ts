@@ -304,7 +304,7 @@ export interface AgendamentoComDetalhes extends Agendamento {
   cliente: Cliente;
   equipe: Equipe;
   distancia_km?: number;
-  tempo_deslocamento_minutos?: number;
+  //tempo_deslocamento_minutos?: number;
 }
 
 export interface OtimizacaoAgendaRequest {
