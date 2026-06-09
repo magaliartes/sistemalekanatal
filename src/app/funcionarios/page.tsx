@@ -31,7 +31,7 @@ const clientes = [
 // src/app/funcionarios/page.tsx
 // ============================================================
 
-export function FuncionariosPage() {
+export default function FuncionariosPage() {
   const funcionarios = [
     {
       id: 1,

@@ -125,7 +125,7 @@ export default function ArvorresPage() {
 // src/app/estoque/arvores/novo/page.tsx
 // ============================================================
 
-export function NovaArvorePage() {
+export default function NovaArvorePage() {
   return (
     <div className="min-h-screen bg-gradient-light">
       {/* Header */}

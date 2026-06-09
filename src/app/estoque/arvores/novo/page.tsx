@@ -1,4 +1,4 @@
-export function NovaArvorePage() {
+export default function NovaArvorePage() {
   return (
     <div className="min-h-screen bg-gradient-light">
       {/* Header */}
