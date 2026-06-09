@@ -1,0 +1,383 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   TEMA NATALINO - CORES E VARIÁVEIS
+   ============================================================ */
+
+:root {
+  /* Cores principais */
+  --color-primary-green: #0d6e3d;
+  --color-primary-red: #c41e3a;
+  --color-gold: #d4af37;
+  --color-light-green: #1b8a4a;
+  --color-dark-green: #0a4a2a;
+  
+  /* Neutros */
+  --color-white: #ffffff;
+  --color-cream: #f5f1e8;
+  --color-gray-light: #f9fafb;
+  --color-gray-medium: #6b7280;
+  --color-gray-dark: #1f2937;
+  
+  /* Sombras natalinas */
+  --shadow-sm: 0 2px 8px rgba(13, 110, 61, 0.1);
+  --shadow-md: 0 4px 16px rgba(13, 110, 61, 0.15);
+  --shadow-lg: 0 8px 32px rgba(13, 110, 61, 0.2);
+}
+
+/* ============================================================
+   RESET E BASE
+   ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: linear-gradient(135deg, #f5f1e8 0%, #fafaf8 100%);
+  color: var(--color-gray-dark);
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   TIPOGRAFIA
+   ============================================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-dark-green);
+}
+
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  font-size: 2rem;
+  letter-spacing: -0.3px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  letter-spacing: -0.2px;
+}
+
+p {
+  color: var(--color-gray-dark);
+  font-size: 1rem;
+}
+
+a {
+  color: var(--color-primary-green);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-light-green);
+}
+
+/* ============================================================
+   COMPONENTES
+   ============================================================ */
+
+/* Botões */
+.btn {
+  @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 inline-block cursor-pointer border-0;
+}
+
+.btn-primary {
+  @apply bg-gradient-to-r from-green-600 to-emerald-700 text-white hover:shadow-lg hover:scale-105;
+}
+
+.btn-secondary {
+  @apply bg-red-600 text-white hover:bg-red-700 hover:shadow-lg;
+}
+
+.btn-outline {
+  @apply border-2 border-green-600 text-green-600 hover:bg-green-50;
+}
+
+.btn:disabled {
+  @apply opacity-50 cursor-not-allowed hover:scale-100;
+}
+
+/* Cards */
+.card {
+  @apply bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 border border-gray-100;
+}
+
+.card:hover {
+  border-color: var(--color-gold);
+}
+
+.card-header {
+  @apply pb-4 border-b border-gray-200 mb-4;
+}
+
+.card-title {
+  @apply text-lg font-bold text-gray-900;
+}
+
+/* Badges */
+.badge {
+  @apply inline-block px-3 py-1 rounded-full text-xs font-semibold;
+}
+
+.badge-success {
+  @apply bg-green-100 text-green-800;
+}
+
+.badge-warning {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.badge-danger {
+  @apply bg-red-100 text-red-800;
+}
+
+.badge-info {
+  @apply bg-blue-100 text-blue-800;
+}
+
+/* Inputs */
+input,
+textarea,
+select {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition;
+  font-family: inherit;
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  @apply bg-gray-100 cursor-not-allowed opacity-75;
+}
+
+/* ============================================================
+   ANIMAÇÕES NATALINAS
+   ============================================================ */
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(-100vh) translateX(0);
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(100px);
+    opacity: 0;
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+  }
+}
+
+@keyframes swing {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes bounce-soft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-snowfall {
+  animation: snowfall 10s linear infinite;
+}
+
+.animate-twinkle {
+  animation: twinkle 1.5s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-swing {
+  animation: swing 3s ease-in-out infinite;
+}
+
+.animate-bounce-soft {
+  animation: bounce-soft 2s ease-in-out infinite;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+
+.container-main {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.section-header {
+  @apply py-8 sm:py-12 border-b border-gray-200 mb-8;
+}
+
+/* Gradientes natalinos */
+.gradient-christmas {
+  background: linear-gradient(135deg, #0d6e3d 0%, #1b8a4a 50%, #c41e3a 100%);
+}
+
+.gradient-light {
+  background: linear-gradient(135deg, #f5f1e8 0%, #fafaf8 100%);
+}
+
+/* ============================================================
+   HEADER E NAVEGAÇÃO
+   ============================================================ */
+
+.navbar {
+  @apply bg-white shadow-md sticky top-0 z-50 border-b-4 border-green-600;
+}
+
+.navbar-brand {
+  @apply text-2xl font-bold text-green-700 flex items-center gap-2;
+}
+
+.navbar-brand-icon {
+  @apply text-3xl animate-bounce-soft;
+}
+
+.nav-link {
+  @apply px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all;
+}
+
+.nav-link.active {
+  @apply bg-green-100 text-green-700 font-semibold;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+footer {
+  @apply bg-gradient-to-r from-green-800 to-green-900 text-white py-8 mt-12 border-t-4 border-red-600;
+}
+
+.footer-link {
+  @apply text-green-100 hover:text-white transition-colors;
+}
+
+/* ============================================================
+   UTILIDADES
+   ============================================================ */
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary-green) 0%, var(--color-primary-red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.divider-gold {
+  @apply border-t-2 border-yellow-400;
+}
+
+.icon-gift {
+  @apply text-2xl;
+}
+
+.christmas-ornament {
+  @apply inline-block w-3 h-3 rounded-full animate-pulse-glow;
+}
+
+.christmas-ornament-red {
+  @apply bg-red-600;
+}
+
+.christmas-ornament-gold {
+  @apply bg-yellow-400;
+}
+
+.christmas-ornament-green {
+  @apply bg-green-600;
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  .card {
+    @apply p-4;
+  }
+}
+
+/* ============================================================
+   DARK MODE (OPCIONAL)
+   ============================================================ */
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #0d6e3d 0%, #0a4a2a 100%);
+    color: var(--color-cream);
+  }
+
+  .card {
+    @apply bg-gray-800 border-gray-700;
+    color: var(--color-cream);
+  }
+
+  input,
+  textarea,
+  select {
+    @apply bg-gray-700 border-gray-600 text-white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-cream);
+  }
+}
