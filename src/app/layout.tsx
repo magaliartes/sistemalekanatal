@@ -5,8 +5,8 @@ import "../globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Árvores de Natal - Sistema Operacional",
-  description: "Sistema para gerenciar montagem e desmontagem de árvores",
+  title: "Leka Natal",
+  description: "Sistema de gestão",
 };
 
 export default function RootLayout({
@@ -16,7 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+      </body>
     </html>
   );
 }

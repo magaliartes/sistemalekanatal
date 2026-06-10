@@ -38,24 +38,25 @@ export default function LoginPage() {
       {/* Card de Login */}
       <div className="w-full max-w-md relative z-10">
         <div className="card shadow-2xl border border-slate-200 backdrop-blur-sm bg-white/95">
-          {/* Header com tema natalino */}
-          <div className="text-center mb-8 pb-6 border-b-2 border-green-200">
-            
-            <h1 className="text-3xl font-bold text-slate-900">
-              Leka Natal
-            </h1>
 
+          <div 
+            className="text-center pb-6 border-b-2 border-green-200" 
+            style={{ marginBottom: '30px' }} // Ajuste esse valor como quiser
+          >
+            <h1 className="text-3xl font-bold text-slate-900">
+              Natal da Leka
+            </h1><br></br>
             <p className="text-slate-500 mt-2">
               Painel Administrativo
             </p>
           </div>
 
           {/* Formulário */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
             {/* Email Input */}
             <div>
               <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                📧 E-mail
+                E-mail 
               </label>
               <input
                 id="email"
@@ -71,7 +72,7 @@ export default function LoginPage() {
             {/* Password Input */}
             <div>
               <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
-                🔐 Senha
+                Senha 
               </label>
               <input
                 id="password"
@@ -103,14 +104,17 @@ export default function LoginPage() {
                 </span>
               ) : (
                 <span className="flex items-center justify-center gap-2">
-                  <span>🚀</span> Entrar no Sistema
+                  Entrar no Sistema
                 </span>
               )}
             </button>
           </form>
 
           {/* Credenciais de teste */}
-          <div className="mt-6 pt-6 border-t-2 border-yellow-200 bg-green-50 rounded-lg p-4">
+          <div 
+            className="pt-6 border-t-2 border-yellow-200 bg-green-50 rounded-lg p-4"
+            style={{ marginTop: '30px' }} // Ajuste esse valor como quiser
+          >
             <p className="text-center text-sm font-semibold text-green-900 mb-3">
               Acesso de Demonstração
             </p>
@@ -118,21 +122,14 @@ export default function LoginPage() {
               <p><strong>Email:</strong> admin@arvoresnatal.com</p>
               <p><strong>Senha:</strong> demo123456</p>
             </div>
-          </div>
+          </div>     
 
           {/* Footer */}
-          <div className="mt-6 text-center text-xs text-gray-500">
-            <p>@2026 Leka Natal</p>
+          <div className="mt-6 text-center text-xs text-gray-500" style={{ marginTop: '30px' }}>
+            <p>@2026 Natal da Leka</p>
           </div>
         </div>
 
-        {/* Info Box */}
-        <div className="mt-6 p-4 bg-white/80 backdrop-blur rounded-xl border-2 border-yellow-300 shadow-lg">
-          <p className="flex items-center gap-2 text-green-700 font-semibold text-sm">
-            <span>💡</span>
-            Dica: Use as credenciais acima para acessar o sistema!
-          </p>
-        </div>
       </div>
     </div>
   );
