@@ -60,23 +60,16 @@ export default function LoginPage() {
 
       {/* Card de Login */}
       <div className="w-full max-w-md relative z-10">
-        <div className="card shadow-2xl border-2 border-yellow-400 backdrop-blur-sm bg-white/95">
+        <div className="card shadow-2xl border border-slate-200 backdrop-blur-sm bg-white/95">
           {/* Header com tema natalino */}
           <div className="text-center mb-8 pb-6 border-b-2 border-green-200">
-            <div className="flex justify-center items-center gap-2 mb-4">
-              <span className="text-5xl animate-bounce-soft">🎄</span>
-              <span className="text-5xl animate-swing">✨</span>
-              <span className="text-5xl animate-bounce-soft" style={{animationDelay: '0.5s'}}>🎄</span>
-            </div>
             
-            <h1 className="text-4xl font-black text-gradient mb-2">
-              Árvores Natal
+            <h1 className="text-3xl font-bold text-slate-900">
+              Leka Natal
             </h1>
-            <p className="text-green-700 font-semibold text-lg">
-              Sistema Operacional Premium
-            </p>
-            <p className="text-gray-500 text-sm mt-2">
-              Gerenciar montagem e desmontagem com excelência
+
+            <p className="text-slate-500 mt-2">
+              Gestão de Montagens Natalinas
             </p>
           </div>
 
@@ -94,7 +87,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="seu@email.com"
                 disabled={isLoading}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl h-12 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
               />
             </div>
 
@@ -110,7 +103,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 disabled={isLoading}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl h-12 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
               />
             </div>
 
@@ -142,7 +135,7 @@ export default function LoginPage() {
           {/* Credenciais de teste */}
           <div className="mt-6 pt-6 border-t-2 border-yellow-200 bg-green-50 rounded-lg p-4">
             <p className="text-center text-sm font-semibold text-green-900 mb-3">
-              🎅 Credenciais de Demonstração
+              Acesso de Demonstração
             </p>
             <div className="space-y-2 text-sm text-green-800">
               <p><strong>Email:</strong> admin@arvoresnatal.com</p>
@@ -152,8 +145,7 @@ export default function LoginPage() {
 
           {/* Footer */}
           <div className="mt-6 text-center text-xs text-gray-500">
-            <p>🔒 Sistema seguro com autenticação avançada</p>
-            <p className="mt-2">✨ Desenvolvido com tecnologia premium</p>
+            <p>@2026 Leka Natal</p>
           </div>
         </div>
 

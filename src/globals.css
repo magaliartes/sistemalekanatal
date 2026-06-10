@@ -46,7 +46,7 @@ html {
 body {
   background: linear-gradient(135deg, #f5f1e8 0%, #fafaf8 100%);
   color: var(--color-gray-dark);
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: inherit;
   line-height: 1.6;
   min-height: 100vh;
 }
@@ -101,7 +101,7 @@ a:hover {
 }
 
 .btn-primary {
-  @apply bg-gradient-to-r from-green-600 to-emerald-700 text-white hover:shadow-lg hover:scale-105;
+  @apply bg-green-700 hover:bg-green-800 text-white hover:shadow-lg hover:scale-105;
 }
 
 .btn-secondary {
@@ -256,7 +256,11 @@ select:disabled {
 
 /* Gradientes natalinos */
 .gradient-christmas {
-  background: linear-gradient(135deg, #0d6e3d 0%, #1b8a4a 50%, #c41e3a 100%);
+  background: linear-gradient(
+    135deg,
+    #f8fafc 0%,
+    #eef2f7 100%
+  );
 }
 
 .gradient-light {
