@@ -34,30 +34,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen gradient-christmas relative overflow-hidden flex items-center justify-center p-4">
-      {/* Decorações animadas de fundo */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="absolute top-10 left-10 text-6xl animate-bounce-soft">🎄</div>
-        <div className="absolute top-20 right-20 text-5xl animate-swing">🎅</div>
-        <div className="absolute bottom-20 left-1/4 text-6xl animate-bounce-soft" style={{animationDelay: '0.5s'}}>❄️</div>
-        <div className="absolute bottom-10 right-1/3 text-5xl animate-swing" style={{animationDelay: '1s'}}>🎁</div>
-      </div>
-
-      {/* Efeito de neve (opcional) */}
-      <div className="absolute inset-0 pointer-events-none opacity-5">
-        {[...Array(5)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute text-white text-2xl animate-snowfall"
-            style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${i * 2}s`,
-            }}
-          >
-            ❄️
-          </div>
-        ))}
-      </div>
-
+      
       {/* Card de Login */}
       <div className="w-full max-w-md relative z-10">
         <div className="card shadow-2xl border border-slate-200 backdrop-blur-sm bg-white/95">
@@ -69,7 +46,7 @@ export default function LoginPage() {
             </h1>
 
             <p className="text-slate-500 mt-2">
-              Gestão de Montagens Natalinas
+              Painel Administrativo
             </p>
           </div>
 
