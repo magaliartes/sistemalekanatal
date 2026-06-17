@@ -1,60 +1,8 @@
-// src/app/clientes/page.tsx
-'use client';
-
 import Link from 'next/link';
+import { listarFuncionarios } from '@/lib/services/funcionarios';
 
-const clientes = [
-  {
-    id: 1,
-    nome: 'Empresa ABC',
-    bairro: 'Bela Vista',
-    whatsapp: '5511999999001',
-    status: 'Ativo',
-  },
-  {
-    id: 2,
-    nome: 'Residência Silva',
-    bairro: 'Tatuapé',
-    whatsapp: '5511999999002',
-    status: 'Ativo',
-  },
-  {
-    id: 3,
-    nome: 'Consultório Dr. Santos',
-    bairro: 'Vila Mariana',
-    whatsapp: '5511999999003',
-    status: 'Ativo',
-  },
-];
-
-// ============================================================
-// src/app/funcionarios/page.tsx
-// ============================================================
-
-export default function FuncionariosPage() {
-  const funcionarios = [
-    {
-      id: 1,
-      nome: 'João Silva',
-      especialidade: 'Montagem',
-      telefone: '11999999001',
-      status: 'Ativo',
-    },
-    {
-      id: 2,
-      nome: 'Maria Santos',
-      especialidade: 'Desmontagem',
-      telefone: '11999999002',
-      status: 'Ativo',
-    },
-    {
-      id: 3,
-      nome: 'Carlos Oliveira',
-      especialidade: 'Ambos',
-      telefone: '11999999003',
-      status: 'Ativo',
-    },
-  ];
+export default async function FuncionariosPage() {
+  const funcionarios = await listarFuncionarios();
 
   return (
     <div className="min-h-screen bg-gradient-light">
@@ -82,14 +30,17 @@ export default function FuncionariosPage() {
       <div className="container-main py-10">
         <div className="mb-6 flex justify-between items-center">
           <h2 className="text-2xl font-black text-gray-900">Funcionários da Equipe</h2>
-          <button className="btn btn-primary">
+          <Link
+            href="/funcionarios/novo"
+            className="btn btn-primary"
+          >
             <span>➕</span> Novo Funcionário
-          </button>
+          </Link>
         </div>
 
         {/* Lista de Funcionários */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {funcionarios.map((func) => (
+          {funcionarios?.map((func) => (
             <div key={func.id} className="card hover:scale-105 hover:shadow-2xl">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3 flex-1">
@@ -116,7 +67,7 @@ export default function FuncionariosPage() {
             </div>
           ))}
         </div>
-
+          <br></br>
         {/* Info Box */}
         <div className="mt-12 p-6 bg-purple-50 rounded-xl border-2 border-purple-300">
           <p className="text-purple-900 font-semibold">

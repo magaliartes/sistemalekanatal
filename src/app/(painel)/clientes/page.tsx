@@ -1,33 +1,9 @@
-// src/app/clientes/page.tsx
-'use client';
-
 import Link from 'next/link';
+import { listarClientes } from '@/lib/services/clientes';
 
-const clientes = [
-  {
-    id: 1,
-    nome: 'Empresa ABC',
-    bairro: 'Bela Vista',
-    whatsapp: '5511999999001',
-    status: 'Ativo',
-  },
-  {
-    id: 2,
-    nome: 'Residência Silva',
-    bairro: 'Tatuapé',
-    whatsapp: '5511999999002',
-    status: 'Ativo',
-  },
-  {
-    id: 3,
-    nome: 'Consultório Dr. Santos',
-    bairro: 'Vila Mariana',
-    whatsapp: '5511999999003',
-    status: 'Ativo',
-  },
-];
+export default async function ClientesPage() {
+  const clientes = await listarClientes();
 
-export default function ClientesPage() {
   return (
     <div className="min-h-screen bg-gradient-light">
       {/* Header */}
@@ -62,33 +38,37 @@ export default function ClientesPage() {
         {/* Lista de Clientes */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {clientes.map((cliente) => (
-            <div key={cliente.id} className="card hover:scale-105 hover:shadow-2xl">
+            <div key={cliente.id} className="card min-h-[220px] hover:scale-105 hover:shadow-2xl">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3 flex-1">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-xl">
-                    👤
-                  </div>
                   <div>
                     <h3 className="font-bold text-gray-900">{cliente.nome}</h3>
                     <p className="text-sm text-gray-500">{cliente.bairro}</p>
+                    <br></br>
                   </div>
                 </div>
-                <span className="badge badge-success">{cliente.status}</span>
               </div>
 
               <div className="border-t border-gray-200 pt-4 mt-4">
-                <p className="text-sm text-gray-600 mb-3">
-                  📱 <span className="font-semibold">{cliente.whatsapp}</span>
-                </p>
+                <div className="mb-6">
+                  <p className="text-sm text-gray-600">
+                    📱 <span className="font-semibold">{cliente.whatsapp}</span>
+                  </p>
+                </div>
+                <div style={{ height: '40px' }} />
                 <div className="flex gap-2">
-                  <button className="flex-1 btn btn-primary text-sm">Editar</button>
-                  <button className="flex-1 btn btn-outline text-sm">Histórico</button>
+                  <button className="flex-1 btn btn-primary text-sm">
+                    Editar
+                  </button>
+                  <button className="flex-1 btn btn-outline text-sm">
+                    Histórico
+                  </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
-
+        <br></br>
         {/* Info Box */}
         <div className="mt-12 p-6 bg-blue-50 rounded-xl border-2 border-blue-300">
           <p className="text-blue-900 font-semibold">
