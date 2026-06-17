@@ -44,7 +44,7 @@ export default function NovoFuncionarioPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/funcionarios', {
+      const response = await fetch('/api/clientes/funcionarios', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
