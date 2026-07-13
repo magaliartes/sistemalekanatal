@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import { listarClientes } from '@/lib/services/clientes';
 
+export const dynamic = 'force-dynamic';
+
 export default async function ClientesPage() {
   const clientes = await listarClientes();
+  console.log('Quantidade:', clientes.length);
 
   return (
     <div className="min-h-screen bg-gradient-light">
@@ -57,12 +60,12 @@ export default async function ClientesPage() {
                 </div>
                 <div style={{ height: '40px' }} />
                 <div className="flex gap-2">
-                  <button className="flex-1 btn btn-primary text-sm">
+                  <Link
+                    href={`/clientes/${cliente.id}`}
+                    className="w-full btn btn-primary text-sm text-center"
+                  >
                     Editar
-                  </button>
-                  <button className="flex-1 btn btn-outline text-sm">
-                    Histórico
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
