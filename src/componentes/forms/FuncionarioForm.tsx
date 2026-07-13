@@ -12,6 +12,7 @@ const initialFormState = {
   nome: '',
   telefone: '',
   endereco: '',
+  numero: '',
   bairro: '',
   cidade: 'São Paulo',
   cep: '',
