@@ -12,6 +12,7 @@ export async function POST(request: Request) {
           nome: body.nome,
           telefone: body.telefone,
           endereco: body.endereco || null,
+          numero: body.numero || null,
           bairro: body.bairro || null,
           cidade: body.cidade || null,
           cep: body.cep || null,

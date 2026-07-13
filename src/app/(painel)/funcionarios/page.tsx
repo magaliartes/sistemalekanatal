@@ -3,6 +3,7 @@ import { listarFuncionarios } from '@/lib/services/funcionarios';
 
 export default async function FuncionariosPage() {
   const funcionarios = await listarFuncionarios();
+  console.log('Quantidade:', funcionarios.length);
 
   return (
     <div className="min-h-screen bg-gradient-light">

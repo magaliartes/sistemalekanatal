@@ -4,26 +4,23 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-interface ClienteFormProps {
-  cliente?: any;
+interface FuncionarioFormProps {
+  funcionario?: any;
 }
 
 const initialFormState = {
   nome: '',
   telefone: '',
-  whatsapp: '',
   endereco: '',
-  numero: '',
-  complemento: '',
   bairro: '',
   cidade: 'São Paulo',
   cep: '',
+  pix: '',
+  especialidade: '',
   observacoes: '',
-  preferencia_periodo: '',
-  horario_preferencial: '',
 };
 
-export default function ClienteForm({ cliente }: ClienteFormProps) {
+export default function FuncionarioForm({ funcionario }: FuncionarioFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -32,25 +29,25 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
   const [buscandoCep, setBuscandoCep] = useState(false);
   const [enderecoBloqueado, setEnderecoBloqueado] = useState(true);
 
-  // Sincroniza o form quando `cliente` chega (ex: depois de um fetch assíncrono na tela de editar)
+  // Sincroniza o form quando `funcionario` chega (ex: depois de um fetch assíncrono na tela de editar)
   useEffect(() => {
-    if (cliente) {
+    if (funcionario) {
       setFormData({
-        nome: cliente.nome ?? '',
-        telefone: cliente.telefone ?? '',
-        whatsapp: cliente.whatsapp ?? '',
-        endereco: cliente.endereco ?? '',
-        numero: cliente.numero ?? '',
-        complemento: cliente.complemento ?? '',
-        bairro: cliente.bairro ?? '',
-        cidade: cliente.cidade ?? 'São Paulo',
-        cep: cliente.cep ?? '',
-        observacoes: cliente.observacoes ?? '',
-        preferencia_periodo: cliente.preferencia_periodo ?? '',
-        horario_preferencial: cliente.horario_preferencial ?? '',
+        nome: funcionario.nome ?? '',
+        telefone: funcionario.telefone ?? '',
+        endereco: funcionario.endereco ?? '',
+        numero: funcionario.numero ?? '',
+        bairro: funcionario.bairro ?? '',
+        cidade: funcionario.cidade ?? 'São Paulo',
+        cep: funcionario.cep ?? '',
+        pix: funcionario.pix ?? '',
+        especialidade: funcionario.especialidade ?? '',
+        observacoes: funcionario.observacoes ?? '',
       });
+      // Se já tem endereço preenchido, mantém bloqueado; se não tem, libera
+      setEnderecoBloqueado(Boolean(funcionario.endereco));
     }
-  }, [cliente]);
+  }, [funcionario]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -60,34 +57,34 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
     }));
   };
 
+  const formatarCep = (value: string) => {
+    const digits = value.replace(/\D/g, '').slice(0, 8);
+
+    if (digits.length <= 5) return digits;
+
+    return `${digits.slice(0, 5)}-${digits.slice(5)}`;
+  };
+
   const formatarTelefone = (value: string) => {
     const digits = value.replace(/\D/g, '').slice(0, 11);
 
     if (digits.length <= 2) return digits.length ? `(${digits}` : digits;
     if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
     if (digits.length <= 10) {
-      return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+        return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
     }
     return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
-  };
+    };
 
-  const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const valorFormatado = formatarTelefone(value);
 
     setFormData(prev => ({
-      ...prev,
-      [name]: valorFormatado,
+        ...prev,
+        [name]: valorFormatado,
     }));
-  };
-
-  const formatarCep = (value: string) => {
-  const digits = value.replace(/\D/g, '').slice(0, 8);
-
-  if (digits.length <= 5) return digits;
-
-    return `${digits.slice(0, 5)}-${digits.slice(5)}`;
-  };
+    };
 
   const buscarCep = async (cepDigitado: string) => {
     const cepLimpo = cepDigitado.replace(/\D/g, '');
@@ -143,16 +140,18 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
     setError('');
     setSuccess('');
 
-    if (!formData.nome || !formData.whatsapp || !formData.endereco || !formData.bairro) {
-      setError('Preencha os campos obrigatórios: Nome, WhatsApp, Endereço e Bairro');
+    if (!formData.nome || !formData.telefone) {
+      setError('Preencha os campos obrigatórios: Nome e Telefone');
       return;
     }
 
     setIsLoading(true);
 
     try {
-      const url = cliente ? `/api/clientes/${cliente.id}` : '/api/clientes';
-      const method = cliente ? 'PUT' : 'POST';
+      const url = funcionario
+        ? `/api/funcionarios/${funcionario.id}`
+        : '/api/funcionarios';
+      const method = funcionario ? 'PUT' : 'POST';
 
       const response = await fetch(url, {
         method,
@@ -163,27 +162,27 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
       const data = await response.json().catch(() => null);
 
       if (!response.ok) {
-        throw new Error(data?.error || 'Erro ao salvar cliente');
+        throw new Error(data?.error || 'Erro ao salvar funcionário');
       }
 
-      setSuccess(cliente ? 'Cliente atualizado com sucesso!' : 'Cliente cadastrado com sucesso!');
+      setSuccess(funcionario ? 'Funcionário atualizado com sucesso!' : 'Funcionário cadastrado com sucesso!');
 
       setTimeout(() => {
-        router.push('/clientes');
+        router.push('/funcionarios');
         router.refresh();
       }, 1000);
     } catch (err: any) {
-      setError(err.message || 'Erro ao salvar cliente');
+      setError(err.message || 'Erro ao salvar funcionário');
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleInativar = async () => {
-    if (!cliente) return;
+    if (!funcionario) return;
 
     const confirmado = window.confirm(
-      `Tem certeza que deseja inativar o cliente "${cliente.nome}"? Ele deixará de aparecer na listagem, mas o histórico de agendamentos será mantido.`
+      `Tem certeza que deseja inativar "${funcionario.nome}"? Ele deixará de aparecer na listagem.`
     );
 
     if (!confirmado) return;
@@ -192,42 +191,42 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`/api/clientes/${cliente.id}`, {
+      const response = await fetch(`/api/funcionarios/${funcionario.id}`, {
         method: 'DELETE',
       });
 
       const data = await response.json().catch(() => null);
 
       if (!response.ok) {
-        throw new Error(data?.error || 'Erro ao inativar cliente');
+        throw new Error(data?.error || 'Erro ao inativar funcionário');
       }
 
-      router.push('/clientes');
+      router.push('/funcionarios');
       router.refresh();
     } catch (err: any) {
-      setError(err.message || 'Erro ao inativar cliente');
+      setError(err.message || 'Erro ao inativar funcionário');
       setIsLoading(false);
     }
   };
 
-  const isEdicao = Boolean(cliente);
+  const isEdicao = Boolean(funcionario);
 
   return (
     <div className="min-h-screen bg-gradient-light">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-700 to-blue-600 text-white shadow-lg border-b-4 border-blue-400">
+      <div className="bg-gradient-to-r from-purple-700 to-purple-600 text-white shadow-lg border-b-4 border-purple-400">
         <div className="container-main py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className="text-4xl">{isEdicao ? '✏️' : '➕'}</span>
               <div>
-                <h1 className="text-3xl font-black">{isEdicao ? 'Editar Cliente' : 'Novo Cliente'}</h1>
-                <p className="text-blue-100">
-                  {isEdicao ? 'Atualize as informações do cliente' : 'Cadastre um novo cliente no sistema'}
+                <h1 className="text-3xl font-black">{isEdicao ? 'Editar Funcionário' : 'Novo Funcionário'}</h1>
+                <p className="text-purple-100">
+                  {isEdicao ? 'Atualize as informações do funcionário' : 'Cadastre um novo membro da equipe'}
                 </p>
               </div>
             </div>
-            <Link href="/clientes">
+            <Link href="/funcionarios">
               <button className="btn btn-outline border-white text-white hover:bg-white/20">
                 ← Voltar
               </button>
@@ -240,14 +239,14 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
       <div className="container-main py-10">
         <div className="max-w-2xl mx-auto card">
           {error && (
-            <div className="mb-4 mt-2 p-4 bg-red-50 border-2 border-red-300 rounded-lg text-red-700 font-medium flex items-start gap-3">
+            <div className="mb-6 p-4 bg-red-50 border-2 border-red-300 rounded-lg text-red-700 font-medium flex items-start gap-3">
               <span className="text-lg">⚠️</span>
               <span>{error}</span>
             </div>
           )}
 
           {success && (
-            <div className="mb-6 mt-2 p-4 bg-green-50 border-2 border-green-300 rounded-lg text-green-700 font-medium flex items-start gap-3">
+            <div className="mb-6 p-4 bg-green-50 border-2 border-green-300 rounded-lg text-green-700 font-medium flex items-start gap-3">
               <span className="text-lg">✅</span>
               <span>{success}</span>
             </div>
@@ -256,11 +255,11 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Seção: Informações Pessoais */}
             <div>
-              <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b-2 border-blue-300 mt-2">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b-2 border-purple-300">
                 👤 Informações Pessoais
               </h3>
 
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Nome Completo *
@@ -272,53 +271,54 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
                     onChange={handleChange}
                     placeholder="Ex: João Silva"
                     required
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Telefone
-                    </label>
-                    <input
-                      type="tel"
-                      name="telefone"
-                      value={formData.telefone}
-                      onChange={handleTelefoneChange}
-                      placeholder="(11) 3000-0000"
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Telefone / WhatsApp *
+                  </label>
+                 <input
+                    type="tel"
+                    name="telefone"
+                    value={formData.telefone}
+                    onChange={handleTelefoneChange}
+                    placeholder="(11) 99999-9999"
+                    required
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition"
                     />
-                  </div>
+                </div>
 
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      WhatsApp *
-                    </label>
-                    <input
-                      type="tel"
-                      name="whatsapp"
-                      value={formData.whatsapp}
-                      onChange={handleTelefoneChange}
-                      placeholder="(11) 99999-9999"
-                      required
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Especialidade
+                  </label>
+                  <select
+                    name="especialidade"
+                    value={formData.especialidade}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition"
+                  >
+                    <option value="">Selecione...</option>
+                    <option value="Montagem">Montagem</option>
+                    <option value="Desmontagem">Desmontagem</option>
+                    <option value="Ambos">Ambos</option>
+                  </select>
                 </div>
               </div>
             </div>
 
             {/* Seção: Endereço */}
             <div>
-              <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b-2 border-blue-300">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b-2 border-purple-300">
                 📍 Endereço
               </h3>
 
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    CEP *
+                    CEP
                   </label>
                   <div className="relative max-w-xs">
                     <input
@@ -326,9 +326,9 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
                       name="cep"
                       value={formData.cep}
                       onChange={handleCepChange}
-                      placeholder="01311-100"
+                      placeholder="03000-000"
                       maxLength={9}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition"
                     />
                     {buscandoCep && (
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
@@ -347,64 +347,46 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
                     name="endereco"
                     value={formData.endereco}
                     onChange={handleChange}
-                    placeholder="Ex: Av. Paulista"
-                    required
+                    placeholder="Ex: Rua das Flores"
                     readOnly={enderecoBloqueado}
                     className={`w-full px-4 py-3 border-2 rounded-lg outline-none transition ${
                       enderecoBloqueado
                         ? 'bg-gray-100 border-gray-200 text-gray-600 cursor-not-allowed'
-                        : 'border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                        : 'border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500'
                     }`}
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Número
-                    </label>
-                    <input
-                      type="text"
-                      name="numero"
-                      value={formData.numero}
-                      onChange={handleChange}
-                      placeholder="1000"
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Complemento
-                    </label>
-                    <input
-                      type="text"
-                      name="complemento"
-                      value={formData.complemento}
-                      onChange={handleChange}
-                      placeholder="Apto, sala, etc"
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                    />
-                  </div>
-                </div>
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Número
+                        </label>
+                        <input
+                        type="text"
+                        name="numero"
+                        value={formData.numero}
+                        onChange={handleChange}
+                        placeholder="1000"
+                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                        />
+                    </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Bairro *
+                      Bairro
                     </label>
                     <input
                       type="text"
                       name="bairro"
                       value={formData.bairro}
                       onChange={handleChange}
-                      placeholder="Ex: Bela Vista"
-                      required
+                      placeholder="Ex: Tatuapé"
                       readOnly={enderecoBloqueado}
                       className={`w-full px-4 py-3 border-2 rounded-lg outline-none transition ${
                         enderecoBloqueado
                           ? 'bg-gray-100 border-gray-200 text-gray-600 cursor-not-allowed'
-                          : 'border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                          : 'border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500'
                       }`}
                     />
                   </div>
@@ -422,7 +404,7 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
                       className={`w-full px-4 py-3 border-2 rounded-lg outline-none transition ${
                         enderecoBloqueado
                           ? 'bg-gray-100 border-gray-200 text-gray-600 cursor-not-allowed'
-                          : 'border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                          : 'border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500'
                       }`}
                     />
                   </div>
@@ -430,70 +412,49 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
               </div>
             </div>
 
-            {/* Seção: Preferências */}
+            {/* Seção: Dados de Pagamento */}
             <div>
-              <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b-2 border-blue-300">
-                ⏰ Preferências
+              <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b-2 border-purple-300">
+                💰 Dados de Pagamento
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Período Preferido
-                  </label>
-                  <select
-                    name="preferencia_periodo"
-                    value={formData.preferencia_periodo}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                  >
-                    <option value="">Selecione...</option>
-                    <option value="manha">Manhã (08:00 - 12:00)</option>
-                    <option value="tarde">Tarde (13:00 - 17:00)</option>
-                    <option value="noite">Noite (17:00 - 21:00)</option>
-                    <option value="integral">Flexível</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Horário Específico
-                  </label>
-                  <input
-                    type="time"
-                    name="horario_preferencial"
-                    value={formData.horario_preferencial}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                  />
-                </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Chave PIX
+                </label>
+                <input
+                  type="text"
+                  name="pix"
+                  value={formData.pix}
+                  onChange={handleChange}
+                  placeholder="CPF, e-mail, celular ou chave aleatória"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition"
+                />
+                <p className="text-xs text-gray-500 mt-1">Para transferências automáticas</p>
               </div>
             </div>
 
             {/* Seção: Observações */}
             <div>
-              <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b-2 border-blue-300">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b-2 border-purple-300">
                 📝 Observações
               </h3>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Observações Adicionais
-                </label>
                 <textarea
                   name="observacoes"
                   value={formData.observacoes}
                   onChange={handleChange}
-                  placeholder="Ex: Cliente VIP, acesso restrito..."
+                  placeholder="Ex: Disponível fim de semana, exp em árvores grandes..."
                   rows={4}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition"
                 />
               </div>
             </div>
 
             {/* Botões */}
             <div className="flex gap-4 pt-6 border-t-2 border-gray-200">
-              <Link href="/clientes" className="flex-1">
+              <Link href="/funcionarios" className="flex-1">
                 <button type="button" className="w-full btn btn-outline text-gray-700">
                   ← Cancelar
                 </button>
@@ -506,12 +467,12 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
                   disabled={isLoading}
                   className="flex-1 btn btn-outline border-red-400 text-red-600 hover:bg-red-50"
                 >
-                  🗑️ Inativar Cliente
+                  🗑️ Inativar
                 </button>
               )}
 
               <button type="submit" disabled={isLoading} className="flex-1 btn btn-primary">
-                {isLoading ? '⏳ Salvando...' : isEdicao ? '✅ Salvar Alterações' : '✅ Cadastrar Cliente'}
+                {isLoading ? '⏳ Salvando...' : isEdicao ? '✅ Salvar Alterações' : '✅ Cadastrar Funcionário'}
               </button>
             </div>
           </form>
