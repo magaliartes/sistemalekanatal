@@ -82,7 +82,7 @@ export async function DELETE(
 
   const { error } = await supabase
     .from('clientes')
-    .delete()
+    .update({ ativo: false })
     .eq('id', id);
 
   if (error) {
