@@ -9,7 +9,14 @@ export async function GET(
 
   const { data, error } = await supabase
     .from('arvores_estoque')
-    .select('*')
+    .select(`
+      *,
+      modelos_arvore (
+        id,
+        nome_modelo,
+        altura
+      )
+    `)
     .eq('id', id)
     .single();
 
@@ -74,7 +81,7 @@ export async function DELETE(
 
   const { error } = await supabase
     .from('arvores_estoque')
-    .update({ status: 'Descartada' })
+    .update({ status: 'descartada' })
     .eq('id', id);
 
   if (error) {
