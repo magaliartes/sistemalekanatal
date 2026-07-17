@@ -6,6 +6,7 @@ export async function listarFuncionarios() {
   const { data, error } = await supabase
     .from('funcionarios')
     .select('*')
+    .eq('ativo', true)
     .order('nome');
 
   console.log(JSON.stringify(data, null, 2));

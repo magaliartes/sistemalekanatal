@@ -6,22 +6,13 @@ export async function POST(request: Request) {
     const body = await request.json()
 
     const { data, error } = await supabase
-      .from('clientes')
+      .from('arvores_estoque')
       .insert([
         {
-          nome: body.nome,
-          telefone: body.telefone,
-          whatsapp: body.whatsapp,
-          endereco: body.endereco,
-          numero: body.numero,
-          complemento: body.complemento,
-          bairro: body.bairro,
-          cidade: body.cidade,
-          cep: body.cep,
+          numero_patrimonio: body.numero_patrimonio,
+          modelo_id: body.modelo_id,
+          status: body.status,
           observacoes: body.observacoes,
-          preferencia_periodo: body.preferencia_periodo,
-          horario_preferencial: body.horario_preferencial,
-          ativo: true,
         }
       ])
       .select()
@@ -53,7 +44,7 @@ export async function GET(
   const { id } = await params;
 
   const { data, error } = await supabase
-    .from('clientes')
+    .from('arvores_estoque')
     .select('*')
     .eq('id', id)
     .single();
@@ -80,20 +71,12 @@ export async function PUT(
     const body = await request.json();
 
     const { data, error } = await supabase
-      .from('clientes')
+      .from('arvores_estoque')
       .update({
-        nome: body.nome,
-        telefone: body.telefone || null,
-        whatsapp: body.whatsapp || null,
-        endereco: body.endereco,
-        numero: body.numero || null,
-        complemento: body.complemento || null,
-        bairro: body.bairro,
-        cidade: body.cidade || 'São Paulo',
-        cep: body.cep || null,
-        observacoes: body.observacoes || null,
-        preferencia_periodo: body.preferencia_periodo || null,
-        horario_preferencial: body.horario_preferencial || null,
+        numero_patrimonio: body.numero_patrimonio,
+        modelo_id: body.modelo_id,
+        status: body.status,
+        observacoes: body.observacoes,
       })
       .eq('id', id)
       .select();
@@ -126,8 +109,8 @@ export async function DELETE(
   const { id } = await params;
 
   const { error } = await supabase
-    .from('clientes')
-    .update({ ativo: false })
+    .from('arvores_estoque')
+    .update({ status: 'Descartada' })
     .eq('id', id);
 
   if (error) {

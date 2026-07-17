@@ -555,3 +555,22 @@ export interface FormState<T> {
   isSubmitting: boolean;
   isValid: boolean;
 }
+
+export interface ModeloArvore {
+  id: string;
+  nome_modelo: string;
+  altura: number | null;
+}
+
+export interface EstoqueArvore {
+  id: string;
+  modelo_id: string;
+  numero_patrimonio: string;
+  status: string;
+  observacoes?: string | null;
+
+  criado_em?: string;
+  atualizado_em?: string;
+
+  modelos_arvores?: ModeloArvore;
+}

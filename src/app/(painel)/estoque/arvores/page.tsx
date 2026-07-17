@@ -1,54 +1,26 @@
-// src/app/estoque/arvores/page.tsx
-'use client';
-
 import Link from 'next/link';
+import { listarArvores } from '@/lib/services/estoqueArvores';
 
-const arvores = [
-  {
-    id: 1,
-    numero_patrimonio: 'ARV-001',
-    modelo: 'Pequena (1.5m)',
-    status: 'Disponível',
-    statusColor: 'badge-success',
-  },
-  {
-    id: 2,
-    numero_patrimonio: 'ARV-002',
-    modelo: 'Média (2.2m)',
-    status: 'Disponível',
-    statusColor: 'badge-success',
-  },
-  {
-    id: 3,
-    numero_patrimonio: 'ARV-003',
-    modelo: 'Grande (3.0m)',
-    status: 'Em Uso',
-    statusColor: 'badge-warning',
-  },
-  {
-    id: 4,
-    numero_patrimonio: 'ARV-004',
-    modelo: 'Gigante (4.0m)',
-    status: 'Disponível',
-    statusColor: 'badge-success',
-  },
-];
+export const dynamic = 'force-dynamic';
 
-export default function ArvorresPage() {
+export default async function ArvoresPage() {
+  const arvores = await listarArvores();
+  console.log('Quantidade:', arvores.length);
+
   return (
     <div className="min-h-screen bg-gradient-light">
       {/* Header */}
-      <div className="bg-gradient-to-r from-yellow-700 to-yellow-600 text-white shadow-lg border-b-4 border-yellow-400">
+      <div className="bg-gradient-to-r from-blue-700 to-blue-600 text-white shadow-lg border-b-4 border-blue-400">
         <div className="container-main py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="text-4xl">🎄</span>
+              <span className="text-4xl">👥</span>
               <div>
-                <h1 className="text-3xl font-black">Estoque de Árvores</h1>
-                <p className="text-yellow-100">Gerenciar árvores de Natal</p>
+                <h1 className="text-3xl font-black">Gerenciar Árvores</h1>
+                <p className="text-blue-100">Visualize e gerencie todo estoque de Árvores</p>
               </div>
             </div>
-            <Link href="/estoque">
+            <Link href="/dashboard">
               <button className="btn btn-outline border-white text-white hover:bg-white/20">
                 ← Voltar
               </button>
@@ -60,12 +32,10 @@ export default function ArvorresPage() {
       {/* Conteúdo */}
       <div className="container-main py-10">
         <div className="mb-6 flex justify-between items-center">
-          <h2 className="text-2xl font-black text-gray-900">Árvores Cadastradas</h2>
-          <Link href="/estoque/arvores/novo">
-            <button className="btn btn-primary">
-              <span>➕</span> Nova Árvore
-            </button>
-          </Link>
+          <h2 className="text-2xl font-black text-gray-900">Clientes Cadastrados</h2>
+        <Link href="/estoque/arvores/novo" className="btn btn-primary">
+        <span>➕</span> Nova Árvore
+        </Link>
         </div>
 
         {/* Tabela de Árvores */}
@@ -76,6 +46,7 @@ export default function ArvorresPage() {
                 <tr className="bg-yellow-50 border-b-2 border-yellow-300">
                   <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Patrimônio</th>
                   <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Modelo</th>
+                  <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Altura</th>
                   <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Status</th>
                   <th className="px-6 py-4 text-left text-sm font-bold text-gray-900">Ações</th>
                 </tr>
@@ -89,9 +60,12 @@ export default function ArvorresPage() {
                     <td className="px-6 py-4 text-sm text-gray-600">
                       {arvore.modelo}
                     </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">
+                      {arvore.altura}
+                    </td>
                     <td className="px-6 py-4">
                       <span className={`badge ${arvore.statusColor}`}>
-                        {arvore.status}
+                        {arvore.statusLabel}
                       </span>
                     </td>
                     <td className="px-6 py-4">
@@ -109,11 +83,11 @@ export default function ArvorresPage() {
             </table>
           </div>
         </div>
-
+        <br></br>
         {/* Info Box */}
-        <div className="mt-12 p-6 bg-yellow-50 rounded-xl border-2 border-yellow-300">
-          <p className="text-yellow-900 font-semibold">
-            🎄 Total de {arvores.length} árvores cadastradas no sistema
+        <div className="mt-12 p-6 bg-blue-50 rounded-xl border-2 border-blue-300">
+          <p className="text-blue-900 font-semibold">
+            💡 Total de {arvores.length} árvores cadastradas no sistema
           </p>
         </div>
       </div>

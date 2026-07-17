@@ -3,9 +3,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/app/hooks/useAuth';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -22,9 +24,15 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      // Simular login (depois conecta com Supabase)
-      console.log('Login com:', email);
+      const result = await login({ email, password });
+
+      if (!result.success) {
+        setError(result.error || 'E-mail ou senha inválidos');
+        return;
+      }
+
       router.push('/dashboard');
+      router.refresh();
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login');
     } finally {
@@ -109,20 +117,6 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-
-          {/* Credenciais de teste */}
-          <div 
-            className="pt-6 border-t-2 border-yellow-200 bg-green-50 rounded-lg p-4"
-            style={{ marginTop: '30px' }} // Ajuste esse valor como quiser
-          >
-            <p className="text-center text-sm font-semibold text-green-900 mb-3">
-              Acesso de Demonstração
-            </p>
-            <div className="space-y-2 text-sm text-green-800">
-              <p><strong>Email:</strong> admin@arvoresnatal.com</p>
-              <p><strong>Senha:</strong> demo123456</p>
-            </div>
-          </div>     
 
           {/* Footer */}
           <div className="mt-6 text-center text-xs text-gray-500" style={{ marginTop: '30px' }}>

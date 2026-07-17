@@ -41,28 +41,31 @@ export default async function FuncionariosPage() {
 
         {/* Lista de Funcionários */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {funcionarios?.map((func) => (
-            <div key={func.id} className="card hover:scale-105 hover:shadow-2xl">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3 flex-1">
-                  <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-xl">
-                    👨‍💼
-                  </div>
+          {funcionarios.map((funcionarios) => (
+            <div key={funcionarios.id} className="card min-h-[220px] hover:scale-105 hover:shadow-2xl">
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center gap-2 flex-1">
                   <div>
-                    <h3 className="font-bold text-gray-900">{func.nome}</h3>
-                    <p className="text-sm text-gray-500">{func.especialidade}</p>
+                    <h3 className="font-bold text-gray-900">{funcionarios.nome}</h3>
+                    <br></br>
                   </div>
                 </div>
-                <span className="badge badge-success">{func.status}</span>
               </div>
 
               <div className="border-t border-gray-200 pt-4 mt-4">
-                <p className="text-sm text-gray-600 mb-3">
-                  📱 <span className="font-semibold">{func.telefone}</span>
-                </p>
+                <div className="mb-4">
+                  <p className="text-sm text-gray-400">
+                    <span className="font-semibold">{funcionarios.telefone}</span>
+                  </p>
+                </div>
+                <div style={{ height: '1opx' }} />
                 <div className="flex gap-2">
-                  <button className="flex-1 btn btn-primary text-sm">Editar</button>
-                  <button className="flex-1 btn btn-outline text-sm">Disponibilidade</button>
+                  <Link
+                    href={`/funcionarios/${funcionarios.id}`}
+                    className="w-full btn btn-primary text-sm text-center"
+                  >
+                    Editar
+                  </Link>
                 </div>
               </div>
             </div>
