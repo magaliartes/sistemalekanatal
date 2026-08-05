@@ -43,6 +43,15 @@ const CORES_TIPO: Record<string, string> = {
 };
 
 export default function Agenda() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const [eventos, setEventos] = useState<Agendamento[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -105,33 +114,34 @@ export default function Agenda() {
       )}
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
+        initialView={isMobile ? 'timeGridDay' : 'dayGridMonth'}  // NOVO: começa em "Dia" no mobile
         locale={ptBrLocale}
-        headerToolbar={{
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay',
-        }}
-        eventTimeFormat={{
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false,
-        }}
-        slotLabelFormat={{
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false,
-        }}
-        slotMinTime="07:00:00"  // NOVO — não mostra antes das 7h
-        slotMaxTime="20:00:00"  // NOVO — não mostra depois das 20h
+        headerToolbar={
+          isMobile
+            ? {
+                left: 'prev,next',
+                center: 'title',
+                right: 'timeGridDay,timeGridWeek', // NOVO: sem view de mês no mobile, menos apertado
+              }
+            : {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay',
+              }
+        }
+        eventTimeFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
+        slotLabelFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
+        slotMinTime="07:00:00"
+        slotMaxTime="20:00:00"
         events={eventosFormatados}
         datesSet={(info) => {
           setRangeAtual({ start: info.startStr, end: info.endStr });
           carregarAgendamentos(info.startStr, info.endStr);
         }}
-        editable
+        editable={!isMobile}      // NOVO: desliga drag-and-drop no touch (evita toque acidental)
         selectable
         height="auto"
+        aspectRatio={isMobile ? 0.8 : 1.35}  // NOVO: calendário mais "alto e estreito" no mobile
         eventClick={(info) => abrirEdicao(info.event.id)}
         dateClick={(info) => abrirNovo(info.date.toISOString())}
       />
