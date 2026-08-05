@@ -113,8 +113,9 @@ export default function Agenda() {
         <div className="text-sm text-gray-400 mb-2">Carregando agendamentos...</div>
       )}
       <FullCalendar
+        key={isMobile ? 'mobile' : 'desktop'}  // NOVO — força remontar ao trocar de mobile pra desktop
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView={isMobile ? 'timeGridDay' : 'dayGridMonth'}  // NOVO: começa em "Dia" no mobile
+        initialView={isMobile ? 'timeGridDay' : 'dayGridMonth'}
         locale={ptBrLocale}
         headerToolbar={
           isMobile
