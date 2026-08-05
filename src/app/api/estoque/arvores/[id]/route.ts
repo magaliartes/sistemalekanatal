@@ -9,20 +9,12 @@ export async function GET(
 
   const { data, error } = await supabase
     .from('arvores_estoque')
-    .select(`
-      *,
-      modelos_arvore (
-        id,
-        nome_modelo,
-        altura
-      )
-    `)
+    .select('*')
     .eq('id', id)
     .single();
 
   if (error) {
     console.error(error);
-
     return NextResponse.json(
       { error: error.message },
       { status: error.code === 'PGRST116' ? 404 : 500 }
@@ -54,22 +46,13 @@ export async function PUT(
 
     if (error) {
       console.error(error);
-
-      return NextResponse.json(
-        { error: error.message },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     return NextResponse.json(data);
-
   } catch (err) {
     console.error(err);
-
-    return NextResponse.json(
-      { error: 'Erro interno do servidor' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro interno do servidor' }, { status: 500 });
   }
 }
 
@@ -81,16 +64,12 @@ export async function DELETE(
 
   const { error } = await supabase
     .from('arvores_estoque')
-    .update({ status: 'descartada' })
+    .update({ status: 'Descartada' })
     .eq('id', id);
 
   if (error) {
     console.error(error);
-
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
   return NextResponse.json({ success: true });

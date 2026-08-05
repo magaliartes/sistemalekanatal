@@ -21,6 +21,15 @@ const initialFormState = {
   observacoes: '',
   preferencia_periodo: '',
   horario_preferencial: '',
+  modelo_arvore_habitual_id: '',
+};
+
+type ModeloArvore = {
+  id: string;
+  nome_modelo: string;
+  tempo_montagem_1_funcionario: number | null;
+  tempo_montagem_2_funcionarios: number | null;
+  tempo_montagem_3_funcionarios: number | null;
 };
 
 export default function ClienteForm({ cliente }: ClienteFormProps) {
@@ -31,6 +40,7 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
   const [formData, setFormData] = useState(initialFormState);
   const [buscandoCep, setBuscandoCep] = useState(false);
   const [enderecoBloqueado, setEnderecoBloqueado] = useState(true);
+  const [modelosArvore, setModelosArvore] = useState<ModeloArvore[]>([]);
 
   // Sincroniza o form quando `cliente` chega (ex: depois de um fetch assíncrono na tela de editar)
   useEffect(() => {
@@ -48,9 +58,16 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
         observacoes: cliente.observacoes ?? '',
         preferencia_periodo: cliente.preferencia_periodo ?? '',
         horario_preferencial: cliente.horario_preferencial ?? '',
+        modelo_arvore_habitual_id: cliente.modelo_arvore_habitual_id ?? '',
       });
     }
   }, [cliente]);
+
+    useEffect(() => {
+    fetch('/api/modelos-arvore')
+      .then(r => r.json())
+      .then(setModelosArvore);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -468,6 +485,30 @@ export default function ClienteForm({ cliente }: ClienteFormProps) {
                   />
                 </div>
               </div>
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Modelo de Árvore Habitual
+              </label>
+
+              <select
+                name="modelo_arvore_habitual_id"
+                value={formData.modelo_arvore_habitual_id}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+              >
+                <option value="">Cliente não possui árvore própria</option>
+
+                {modelosArvore.map((modelo) => (
+                  <option key={modelo.id} value={modelo.id}>
+                    {modelo.nome_modelo}
+                  </option>
+                ))}
+              </select>
+
+              <p className="mt-1 text-xs text-gray-500">
+                Opcional. Quando informado, este modelo será sugerido automaticamente ao criar um agendamento para este cliente.
+              </p>
             </div>
 
             {/* Seção: Observações */}

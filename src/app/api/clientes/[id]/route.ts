@@ -49,6 +49,7 @@ export async function PUT(
         observacoes: body.observacoes || null,
         preferencia_periodo: body.preferencia_periodo || null,
         horario_preferencial: body.horario_preferencial || null,
+        modelo_arvore_habitual_id: body.modelo_arvore_habitual_id || null,
       })
       .eq('id', id)
       .select();
